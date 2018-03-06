@@ -1,4 +1,4 @@
-this.ckan.module('daterangepicker-module', function ($, _) {
+this.ckan.module('daterangepicker-module', function ($) {
     return {
         initialize: function () {
 
@@ -14,11 +14,11 @@ this.ckan.module('daterangepicker-module', function ($, _) {
 
             // Populate the datepicker and hidden fields
             if (param_start) {
-                $('#datepicker #start').val(moment.utc(param_start).year());
+                $('#start').val(moment.utc(param_start).year());
                 $('#ext_startdate').val(param_start);
             }
             if (param_end) {
-                $('#datepicker #end').val(moment.utc(param_end).year());
+                $('#end').val(moment.utc(param_end).year());
                 $('#ext_enddate').val(param_end);
             }
 
@@ -35,42 +35,46 @@ this.ckan.module('daterangepicker-module', function ($, _) {
                 $('<input type="hidden" id="ext_enddate" name="ext_enddate" />').appendTo(form);
             }
 
+	        earliest_publication_year = this.options.earliest_publication_year.toString();
+
             // Add a date-range picker widget to the <input> with id #daterange
-            $('#datepicker.input-daterange').datepicker({
-                format: "yyyy",
+            $('#start').datepicker({
+		        startDate: earliest_publication_year,
+                endDate: "+0d",
+		        format: "yyyy",
                 startView: 3,
                 minViewMode: 2,
                 keyboardNavigation: false,
                 autoclose: true
-            }).on('changeDate', function (ev) {
-                    // Bootstrap-daterangepicker calls this function after the user picks a start and end date.
+	        }).on('changeDate', function (ev) {
+                var start_date = moment(ev.date);
+                var fs = 'YYYY-MM-DDTHH:mm:ss';
+                $('#ext_startdate').val(start_date.format(fs) + 'Z');
+                var end_date = start_date.add('y', 1).subtract('s', 1);
+                if(ev.date > Date.parse(param_end))
+                    $('#ext_enddate').val(end_date.format(fs) + 'Z');
+                form.submit();
+            });
 
-                    // Format the start and end dates into strings in a date format that Solr understands.
-                    var v = moment(ev.date);
-                    var fs = 'YYYY-MM-DDTHH:mm:ss';
+            // Add a year picker widget to the <input> with id #end
+            $('#end').datepicker({
+		        startDate: earliest_publication_year,
+                endDate: "+0d",
+		        format: "yyyy",
+                startView: 3,
+                minViewMode: 2,
+                keyboardNavigation: false,
+                autoclose: true
+	        }).on('changeDate', function (ev) {
+                var start_date = moment(ev.date);
+                var end_date = moment(ev.date).add('y', 1).subtract('s', 1);
+                var fs = 'YYYY-MM-DDTHH:mm:ss';
+                $('#ext_enddate').val(end_date.format(fs) + 'Z');
+                if(ev.date < Date.parse(param_start))
+                    $('#ext_startdate').val(start_date.format(fs) + 'Z');
+                form.submit();
+            });
 
-                    switch (ev.target.name) {
-                        case 'start':
-                            // Set the value of the hidden <input id="ext_startdate"> to the chosen start date.
-                            if (ev.date) {
-                                $('#ext_startdate').val(v.format(fs) + 'Z');
-                            } else {
-                                $('#ext_startdate').val('');
-                            }
-                            break;
-                        case 'end':
-                            // Set the value of the hidden <input id="ext_enddate"> to the chosen end date.
-                            if (ev.date) {
-                                $('#ext_enddate').val(v.add('y', 1).subtract('s', 1).format(fs) + 'Z');
-                            } else {
-                                $('#ext_enddate').val('');
-                            }
-                            break;
-                    }
-
-                    // Submit the <form id="dataset-search">.
-                    form.submit();
-                });
         }
     }
 });
