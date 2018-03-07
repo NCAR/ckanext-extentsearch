@@ -9,8 +9,8 @@ this.ckan.module('daterangepicker-module', function ($) {
             };
 
             // Pick out relevant parameters
-            param_start = $.urlParam('ext_startdate');
-            param_end = $.urlParam('ext_enddate');
+            var param_start = $.urlParam('ext_startdate');
+            var param_end = $.urlParam('ext_enddate');
 
             // Populate the datepicker and hidden fields
             if (param_start) {
@@ -35,7 +35,7 @@ this.ckan.module('daterangepicker-module', function ($) {
                 $('<input type="hidden" id="ext_enddate" name="ext_enddate" />').appendTo(form);
             }
 
-	        earliest_publication_year = this.options.earliest_publication_year.toString();
+	        var earliest_publication_year = this.options.earliest_publication_year.toString();
 
             // Add a date-range picker widget to the <input> with id #daterange
             $('#start').datepicker({
@@ -47,12 +47,18 @@ this.ckan.module('daterangepicker-module', function ($) {
                 keyboardNavigation: false,
                 autoclose: true
 	        }).on('changeDate', function (ev) {
+	            var fs = 'YYYY-MM-DDTHH:mm:ss';
                 var start_date = moment(ev.date);
-                var fs = 'YYYY-MM-DDTHH:mm:ss';
-                $('#ext_startdate').val(start_date.format(fs) + 'Z');
-                var end_date = start_date.add('y', 1).subtract('s', 1);
-                if(ev.date > Date.parse(param_end))
-                    $('#ext_enddate').val(end_date.format(fs) + 'Z');
+                var end_date = moment($('#end').val());
+                //Flip the dates if end date is before start date, this ensures correct order in search view for results.
+                if(start_date > end_date) {
+                    start_date.add('y', 1).subtract('s', 1);
+                    $('#ext_enddate').val(start_date.format(fs) + 'Z');
+                    $('#ext_startdate').val(end_date.format(fs) + 'Z');
+                }
+                else {
+                    $('#ext_startdate').val(start_date.format(fs) + 'Z');
+                }
                 form.submit();
             });
 
@@ -66,12 +72,19 @@ this.ckan.module('daterangepicker-module', function ($) {
                 keyboardNavigation: false,
                 autoclose: true
 	        }).on('changeDate', function (ev) {
-                var start_date = moment(ev.date);
-                var end_date = moment(ev.date).add('y', 1).subtract('s', 1);
-                var fs = 'YYYY-MM-DDTHH:mm:ss';
-                $('#ext_enddate').val(end_date.format(fs) + 'Z');
-                if(ev.date < Date.parse(param_start))
-                    $('#ext_startdate').val(start_date.format(fs) + 'Z');
+	            var fs = 'YYYY-MM-DDTHH:mm:ss';
+                var end_date = moment(ev.date);
+                var start_date = moment($('#start').val());
+                //Flip the dates if end date is before start date, this ensures correct order in search view for results.
+                if(end_date < start_date) {
+                    $('#ext_startdate').val(end_date.format(fs) + 'Z');
+                    start_date.add('y', 1).subtract('s', 1);
+                    $('#ext_enddate').val(start_date.format(fs) + 'Z');
+                }
+                else {
+                    end_date.add('y', 1).subtract('s', 1);
+                    $('#ext_enddate').val(end_date.format(fs) + 'Z');
+                }
                 form.submit();
             });
 
