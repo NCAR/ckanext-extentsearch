@@ -3,8 +3,6 @@
 #
 import ckan.logic as logic
 from datetime import datetime
-import pydevd
-pydevd.settrace('0.0.0.0', port=6666, stdoutToServer=True, stderrToServer=True, suspend=False)
 
 
 def _get_data_dict_for_earliest_publication_year():
