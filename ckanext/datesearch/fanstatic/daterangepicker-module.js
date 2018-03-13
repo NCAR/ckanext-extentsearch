@@ -49,9 +49,10 @@ this.ckan.module('daterangepicker-module', function ($) {
 	        }).on('changeDate', function (ev) {
 	            var fs = 'YYYY-MM-DDTHH:mm:ss';
                 var start_date = moment(ev.date);
-                var end_date = moment($('#end').val(), "YYYY");
+                var end_date_str = $('#end').val();
+                var end_date = moment(end_date_str, "YYYY");
                 //Flip the dates if end date is before start date, this ensures correct order in search view for results.
-                if(start_date > end_date) {
+                if(end_date_str && (start_date > end_date)) {
                     $('#ext_startdate').val(end_date.format(fs) + 'Z');
                     start_date.add('y', 1).subtract('s', 1);
                     $('#ext_enddate').val(start_date.format(fs) + 'Z');
@@ -75,9 +76,10 @@ this.ckan.module('daterangepicker-module', function ($) {
 	        }).on('changeDate', function (ev) {
 	            var fs = 'YYYY-MM-DDTHH:mm:ss';
                 var end_date = moment(ev.date);
-                var start_date = moment($('#start').val(), "YYYY");
+                var start_date_str = $('#start').val();
+                var start_date = moment(start_date_str, "YYYY");
                 //Flip the dates if end date is before start date, this ensures correct order in search view for results.
-                if(end_date < start_date) {
+                if(start_date_str && (end_date < start_date)) {
                     $('#ext_startdate').val(end_date.format(fs) + 'Z');
                     start_date.add('y', 1).subtract('s', 1);
                     $('#ext_enddate').val(start_date.format(fs) + 'Z');
