@@ -56,7 +56,6 @@ this.ckan.module('daterangepicker-module', function ($) {
                     $('#ext_startdate').val(end_date.format(fs) + 'Z');
                     start_date.add('y', 1).subtract('s', 1);
                     $('#ext_enddate').val(start_date.format(fs) + 'Z');
-
                 }
                 else {
                     $('#ext_startdate').val(start_date.utc().format(fs) + 'Z');
