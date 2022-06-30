@@ -14,11 +14,11 @@ this.ckan.module('daterangepicker-module', function ($) {
 
             // Populate the datepicker and hidden fields
             if (param_start) {
-                $('#start').val(moment.utc(param_start).year());
+                $('#start').val(moment.utc(param_start).format('YYYY-MM-DD'));
                 $('#ext_startdate').val(param_start);
             }
             if (param_end) {
-                $('#end').val(moment.utc(param_end).year());
+                $('#end').val(moment.utc(param_end).format('YYYY-MM-DD'));
                 $('#ext_enddate').val(param_end);
             }
 
@@ -35,59 +35,65 @@ this.ckan.module('daterangepicker-module', function ($) {
                 $('<input type="hidden" id="ext_enddate" name="ext_enddate" />').appendTo(form);
             }
 
-	        var earliest_publication_year = this.options.earliest_publication_year.toString();
+	    //var earliest_date = this.options.earliest_publication_year.toString();
+	    var earliest_date_str = "1700-01-01";
+	    var earliest_date = moment(earliest_date_str, "YYYY-MM-DD")
 
             // Add a date-range picker widget to the <input> with id #daterange
             $('#start').datepicker({
-		        startDate: earliest_publication_year,
-                endDate: "+0d",
-		        format: "yyyy",
-                startView: 3,
-                minViewMode: 2,
-                keyboardNavigation: false,
-                autoclose: true
+		        format: "yyyy-mm-dd",
+		        startDate: earliest_date_str,
+                        //forceParse: false,
+                        autoclose: true 
 	        }).on('changeDate', function (ev) {
 	            var fs = 'YYYY-MM-DDTHH:mm:ss';
+	            //var fs = 'YYYY-MM-DD';
                 var start_date = moment(ev.date);
+                var start_date_str = start_date.format('YYYY-MM-DD');
                 var end_date_str = $('#end').val();
-                var end_date = moment(end_date_str, "YYYY");
-                //Flip the dates if end date is before start date, this ensures correct order in search view for results.
-                if(end_date_str && (start_date > end_date)) {
-                    $('#ext_startdate').val(end_date.format(fs) + 'Z');
-                    start_date.add('y', 1).subtract('s', 1);
-                    $('#ext_enddate').val(start_date.format(fs) + 'Z');
+                var end_date = moment(end_date_str, "YYYY-MM-DD");
+
+                if (start_date.isValid() && start_date > earliest_date) {
+
+                   //Flip the dates if end date is before start date, this ensures correct order in search view for results.
+                   if(end_date.isValid() && (start_date > end_date)) {
+                       $('#ext_startdate').val(end_date.format(fs) + 'Z');
+//                       start_date.add('y', 1).subtract('s', 1);
+                       $('#ext_enddate').val(start_date.format(fs) + 'Z');
+                   }
+                   else {
+                       $('#ext_startdate').val(start_date.utc().format(fs) + 'Z');
+                   }
+                   form.submit();
                 }
-                else {
-                    $('#ext_startdate').val(start_date.utc().format(fs) + 'Z');
-                }
-                form.submit();
             });
 
             // Add a year picker widget to the <input> with id #end
             $('#end').datepicker({
-		        startDate: earliest_publication_year,
-                endDate: "+0d",
-		        format: "yyyy",
-                startView: 3,
-                minViewMode: 2,
-                keyboardNavigation: false,
-                autoclose: true
+		        format: "yyyy-mm-dd",
+		        startDate: earliest_date_str,
+                        //forceParse: false,
+                        autoclose: true
 	        }).on('changeDate', function (ev) {
 	            var fs = 'YYYY-MM-DDTHH:mm:ss';
+	            //var fs = 'YYYY-MM-DD';
                 var end_date = moment(ev.date);
                 var start_date_str = $('#start').val();
-                var start_date = moment(start_date_str, "YYYY");
-                //Flip the dates if end date is before start date, this ensures correct order in search view for results.
-                if(start_date_str && (end_date < start_date)) {
-                    $('#ext_startdate').val(end_date.format(fs) + 'Z');
-                    start_date.add('y', 1).subtract('s', 1);
-                    $('#ext_enddate').val(start_date.format(fs) + 'Z');
+                var start_date = moment(start_date_str, "YYYY-MM-DD");
+                if (end_date.isValid() && end_date > earliest_date) {
+
+                   //Flip the dates if end date is before start date, this ensures correct order in search view for results.
+                   if(start_date.isValid() && (end_date < start_date)) {
+                       $('#ext_startdate').val(end_date.format(fs) + 'Z');
+//                       start_date.add('y', 1).subtract('s', 1);
+                       $('#ext_enddate').val(start_date.format(fs) + 'Z');
+                   }
+                   else {
+//                       end_date.add('y', 1).subtract('s', 1);
+                       $('#ext_enddate').val(end_date.format(fs) + 'Z');
+                   }
+                   form.submit();
                 }
-                else {
-                    end_date.add('y', 1).subtract('s', 1);
-                    $('#ext_enddate').val(end_date.format(fs) + 'Z');
-                }
-                form.submit();
             });
 
         }
