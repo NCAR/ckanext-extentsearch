@@ -48,12 +48,13 @@ this.ckan.module('daterangepicker-module', function ($) {
 	        }).on('changeDate', function (ev) {
 	            var fs = 'YYYY-MM-DDTHH:mm:ss';
 	            //var fs = 'YYYY-MM-DD';
+                var todays_date_str = moment().format('YYYY-MM-DD');
                 var start_date = moment(ev.date);
                 var start_date_str = start_date.format('YYYY-MM-DD');
                 var end_date_str = $('#end').val();
                 var end_date = moment(end_date_str, "YYYY-MM-DD");
 
-                if (start_date.isValid() && start_date > earliest_date) {
+                if (start_date.isValid() && start_date_str != todays_date_str) {
 
                    //Flip the dates if end date is before start date, this ensures correct order in search view for results.
                    if(end_date.isValid() && (start_date > end_date)) {
@@ -77,10 +78,12 @@ this.ckan.module('daterangepicker-module', function ($) {
 	        }).on('changeDate', function (ev) {
 	            var fs = 'YYYY-MM-DDTHH:mm:ss';
 	            //var fs = 'YYYY-MM-DD';
+                var todays_date_str = moment().format('YYYY-MM-DD');
                 var end_date = moment(ev.date);
+                var end_date_str = end_date.format('YYYY-MM-DD');
                 var start_date_str = $('#start').val();
                 var start_date = moment(start_date_str, "YYYY-MM-DD");
-                if (end_date.isValid() && end_date > earliest_date) {
+                if (end_date.isValid() && end_date_str != todays_date_str) {
 
                    //Flip the dates if end date is before start date, this ensures correct order in search view for results.
                    if(start_date.isValid() && (end_date < start_date)) {
