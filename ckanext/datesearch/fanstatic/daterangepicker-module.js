@@ -45,29 +45,39 @@ this.ckan.module('daterangepicker-module', function ($) {
 		        startDate: earliest_date_str,
                         clearBtn: true,
                         defaultViewDate: { year: 1850, month: 01, day: 25 },
-                        //forceParse: false,
+                        forceParse: false,
                         autoclose: true 
 	        }).on('changeDate', function (ev) {
 	            var fs = 'YYYY-MM-DDTHH:mm:ss';
-	            //var fs = 'YYYY-MM-DD';
+	            var fs2 = 'YYYY-MM-DD';
                 var default_date_str = "1850-01-25";
+                var today_date_str = moment().format('YYYY-MM-DD');
                 var start_date = moment(ev.date);
                 var start_date_str = start_date.format('YYYY-MM-DD');
                 var end_date_str = $('#end').val();
                 var end_date = moment(end_date_str, "YYYY-MM-DD");
 
-                if (start_date.isValid() && start_date_str != default_date_str) {
+                if (start_date.isValid() && start_date_str != default_date_str && start_date_str != today_date_str) {
 
                    //Flip the dates if end date is before start date, this ensures correct order in search view for results.
                    if(end_date.isValid() && (start_date > end_date)) {
-                       $('#ext_startdate').val(end_date.format(fs) + 'Z');
-                       $('#ext_enddate').val(start_date.format(fs) + 'Z');
+                       //$('#ext_startdate').val(end_date.format(fs) + 'Z');
+                       //$('#ext_enddate').val(start_date.format(fs) + 'Z');
+                       $('#ext_startdate').val(end_date.format(fs2) + 'T00:00:00Z');
+                       $('#ext_enddate').val(start_date.format(fs2) + 'T00:00:00Z');
                    }
                    else {
-                       $('#ext_startdate').val(start_date.utc().format(fs) + 'Z');
+                       //$('#ext_startdate').val(start_date.utc().format(fs) + 'Z');
+                       $('#ext_startdate').val(start_date.utc().format(fs2) + 'T00:00:00Z');
                    }
                    form.submit();
                 }
+            }).on('clearDate', function (ev) {
+                  //var url = window.location.href;
+                  var url = location.href;
+                  modified_url = url.replace(/&?ext_startdate=([^&]$|[^&]*)/i, "");
+                  //window.location.href = modified_url;
+                  location.href = modified_url;
             });
 
             // Add a year picker widget to the <input> with id #end
@@ -76,28 +86,33 @@ this.ckan.module('daterangepicker-module', function ($) {
 		        startDate: earliest_date_str,
                         clearBtn: true,
                         defaultViewDate: { year: 2100, month: 01, day: 25 },
-                        //forceParse: false,
+                        forceParse: false,
                         autoclose: true
 	        }).on('changeDate', function (ev) {
 	            var fs = 'YYYY-MM-DDTHH:mm:ss';
-	            //var fs = 'YYYY-MM-DD';
+	            var fs2 = 'YYYY-MM-DD';
                 var default_date_str = "2100-01-25";
                 var end_date = moment(ev.date);
                 var end_date_str = end_date.format('YYYY-MM-DD');
                 var start_date_str = $('#start').val();
                 var start_date = moment(start_date_str, "YYYY-MM-DD");
-                if (end_date.isValid() && end_date_str != default_date_str) {
+                var today_date_str = moment().format('YYYY-MM-DD');
+                if (end_date.isValid() && end_date_str != default_date_str && end_date_str != today_date_str) {
 
                    //Flip the dates if end date is before start date, this ensures correct order in search view for results.
                    if(start_date.isValid() && (end_date < start_date)) {
-                       $('#ext_startdate').val(end_date.format(fs) + 'Z');
-                       $('#ext_enddate').val(start_date.format(fs) + 'Z');
+                       $('#ext_startdate').val(end_date.format(fs2) + 'T00:00:00Z');
+                       $('#ext_enddate').val(start_date.format(fs2) + 'T00:00:00Z');
                    }
                    else {
-                       $('#ext_enddate').val(end_date.format(fs) + 'Z');
+                       $('#ext_enddate').val(end_date.format(fs2) + 'T00:00:00Z');
                    }
                    form.submit();
                 }
+            }).on('clearDate', function (ev) {
+                  var url = location.href;
+                  modified_url = url.replace(/&?ext_enddate=([^&]$|[^&]*)/i, "");
+                  location.href = modified_url;
             });
 
         }

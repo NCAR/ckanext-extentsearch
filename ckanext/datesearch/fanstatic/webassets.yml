@@ -8,4 +8,5 @@ datesearch-js:
 datesearch-css:
   contents:
     - datepicker.css
+    - bootstrap-datepicker3.css.map
 
