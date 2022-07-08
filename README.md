@@ -1,4 +1,4 @@
-# "Filter by year" extension for CKAN
+# "Filter Dataset Temporal Extent" extension for CKAN
 
 ## License
 GNU Affero General Public License version 3 (AGPLv3)
@@ -12,12 +12,12 @@ Originally started by [Sean Hammond](https://github.com/seanh).
 
 ## Installation
 cd /usr/lib/ckan/default/src
-git clone https://github.com/NCAR/ckanext-datesearch.git
-cd ckanext-datesearch
+git clone https://github.com/NCAR/ckanext-extentsearch.git
+cd ckanext-extentsearch
 python setup.py develop
 
 To check:  pip list
 see 
-ckanext-datesearch (0.3.0, /usr/lib/ckan/default/src/ckanext-datesearch)
+ckanext-extentsearch (0.1.0, /usr/lib/ckan/default/src/ckanext-extentsearch)
 
-Now add datesearch to your development.ini list of plugins.
+Now add extentsearch to your development.ini list of plugins.
