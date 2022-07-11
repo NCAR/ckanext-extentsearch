@@ -1,20 +1,20 @@
 import logging
 
-import ckanext.datesearch.helpers as helpers
+import ckanext.extentsearch.helpers as helpers
 import ckan.plugins as plugins
 import ckan.plugins.toolkit as toolkit
 
 log = logging.getLogger(__name__)
 
 
-class DateSearchPlugin(plugins.SingletonPlugin):
+class ExtentSearchPlugin(plugins.SingletonPlugin):
     plugins.implements(plugins.IConfigurer)
     plugins.implements(plugins.ITemplateHelpers)
     plugins.implements(plugins.IPackageController, inherit=True)
 
     def update_config(self, config):
         toolkit.add_template_directory(config, 'templates')
-        toolkit.add_resource('fanstatic', 'ckanext-datesearch')
+        toolkit.add_resource('fanstatic', 'ckanext-extentsearch')
 
     def before_search(self, search_params):
         """ This function adds the publication_date from the extras url parameters to the solr
