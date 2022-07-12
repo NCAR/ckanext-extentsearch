@@ -8,24 +8,24 @@
   <section class="module module-narrow module-shallow">
     <h2 class="module-heading">
       <i class="fa fa-calendar"></i> {{ _('Data Temporal Extent') }}
-      <a href="{{ h.remove_url_param(['ext_startdate', 'ext_enddate']) }}" class="action">{{ _('Clear') }}</a>
+      <a href="{{ h.remove_url_param(['ext_dsstart', 'ext_dsend']) }}" class="action">{{ _('Clear') }}</a>
     </h2>
 
-    {% set publication_year = h.get_earliest_publication_year() %}
+    {% set ds_startyear = '1800' %}
 
     <div class="row" style="height: 50px; padding-top: 10px; align-items: center">
       <div class="col-xs-1" style="padding: 6px 12px; height: 34px;">
       </div>
       <div class="col-xs-4" style="padding-right: 0px; vert-align: middle">
         <input class="form-control input-sm text-center" type="text" style="cursor:pointer;" name="start" id="start" data-module="daterangepicker-module" readonly="true"
-            data-module-earliest_publication_year= "{{ publication_year }}">
+            data-module-earliest_startyear= "{{ ds_startyear }}">
       </div>
       <div class="col-xs-2" style="padding: 6px 12px; height: 34px;">
         <span class="add-on">&nbsp;&nbsp;to</span>
       </div>
       <div class="col-xs-4" style="padding-left: 0px;">
         <input class="form-control input-sm text-center" type="text" style="cursor:pointer;" name="end" id="end" data-module="daterangepicker-module" readonly="true"
-            data-module-earliest_publication_year= "{{ publication_year }}">
+            data-module-earliest_startyear = "{{ ds_startyear }}">
       </div>
     </div>
 
