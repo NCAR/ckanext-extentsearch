@@ -11,6 +11,8 @@ this.ckan.module('daterangepicker-module', function ($) {
             // Pick out relevant parameters
             var param_start = $.urlParam('ext_dsstart');
             var param_end = $.urlParam('ext_dsend');
+            //var param_start = dates[0].substring(1);
+            //var param_end = dates[1].substring(0, dates[1].length - 1);
 
             // Populate the datepicker and hidden fields
             if (param_start) {
@@ -40,25 +42,26 @@ this.ckan.module('daterangepicker-module', function ($) {
             // Add a date-range picker widget to the <input> with id #daterange
             $('#start').datepicker({
 		        startDate: "1800",
-                        endDate: "2200",
+                endDate: "2200",
 		        format: "yyyy",
                 startView: 3,
                 minViewMode: 2,
                 keyboardNavigation: false,
                 autoclose: true
 	        }).on('changeDate', function (ev) {
-	            var fs = 'YYYY-MM-DDTHH:mm:ss';
+	            //var fs = 'YYYY-MM-DDTHH:mm:ss';
                 var start_date = moment(ev.date);
+                var start_date_str = start_date.format('YYYY')
                 var end_date_str = $('#end').val();
                 var end_date = moment(end_date_str, "YYYY");
-                //Flip the dates if end date is before start date, this ensures correct order in search view for results.
-                if(end_date_str && (start_date > end_date)) {
-                    $('#ext_dsstart').val(end_date.format(fs) + 'Z');
-                    start_date.add('y', 1).subtract('s', 1);
-                    $('#ext_dsend').val(start_date.format(fs) + 'Z');
+                // Flip the dates if end date is before start date, this ensures correct order in search view for results.
+                if(end_date_str && start_date.isAfter(end_date, 'year')) {
+                    $('#ext_dsstart').val(end_date_str);
+                    //start_date.add('y', 1).subtract('s', 1);
+                    $('#ext_dsend').val(start_date_str);
                 }
                 else {
-                    $('#ext_dsstart').val(start_date.utc().format(fs) + 'Z');
+                    $('#ext_dsstart').val(start_date_str);
                 }
                 form.submit();
             });
@@ -66,26 +69,27 @@ this.ckan.module('daterangepicker-module', function ($) {
             // Add a year picker widget to the <input> with id #end
             $('#end').datepicker({
 		        startDate: "1800",
-                        endDate: "2200",
+                endDate: "2200",
 		        format: "yyyy",
                 startView: 3,
                 minViewMode: 2,
                 keyboardNavigation: false,
                 autoclose: true
 	        }).on('changeDate', function (ev) {
-	            var fs = 'YYYY-MM-DDTHH:mm:ss';
+	            //var fs = 'YYYY-MM-DDTHH:mm:ss';
                 var end_date = moment(ev.date);
+                var end_date_str = end_date.format('YYYY')
                 var start_date_str = $('#start').val();
                 var start_date = moment(start_date_str, "YYYY");
                 //Flip the dates if end date is before start date, this ensures correct order in search view for results.
-                if(start_date_str && (end_date < start_date)) {
-                    $('#ext_dsstart').val(end_date.format(fs) + 'Z');
-                    start_date.add('y', 1).subtract('s', 1);
-                    $('#ext_dsend').val(start_date.format(fs) + 'Z');
+                if(start_date_str && start_date.isAfter(end_date, 'year')) {
+                    $('#ext_dsstart').val(end_date_str);
+                    //start_date.add('y', 1).subtract('s', 1);
+                    $('#ext_dsend').val(start_date_str);
                 }
                 else {
-                    end_date.add('y', 1).subtract('s', 1);
-                    $('#ext_dsend').val(end_date.format(fs) + 'Z');
+                    //end_date.add('y', 1).subtract('s', 1);
+                    $('#ext_dsend').val(end_date_str);
                 }
                 form.submit();
             });

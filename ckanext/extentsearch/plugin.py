@@ -34,7 +34,7 @@ class ExtentSearchPlugin(plugins.SingletonPlugin):
             end_date = '*'
         # Add a date-range query with the selected start and/or end dates into the Solr facet queries.
         fq = search_params.get('fq', '')
-        fq = '{fq} +extras_publication_date:[{sd} TO {ed}]'.format(fq=fq, sd=start_date, ed=end_date)
+        fq = '{fq} +extent_range:[{sd} TO {ed}]'.format(fq=fq, sd=start_date, ed=end_date)
         search_params['fq'] = fq
         return search_params
 
