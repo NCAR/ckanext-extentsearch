@@ -7,8 +7,8 @@
   {# This <section> is the date-range picker widget in the sidebar. #}
   <section class="module module-narrow module-shallow">
     <h2 class="module-heading">
-      <i class="fa fa-calendar"></i> {{ _('Data Temporal Extent') }}
-      <a href="{{ h.remove_url_param(['ext_dsstart', 'ext_dsend']) }}" class="action">{{ _('Clear') }}</a>
+      <i class="fa fa-calendar"></i> {{ _('Dataset Temporal Extent') }}
+      <a href="{{ h.remove_url_param(['ext_start', 'ext_end']) }}" class="action">{{ _('Clear') }}</a>
     </h2>
 
     {% set ds_startyear = '1800' %}
