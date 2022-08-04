@@ -1,4 +1,4 @@
-this.ckan.module('daterangepicker-module', function ($) {
+this.ckan.module('ds-daterangepicker-module', function ($) {
     return {
         initialize: function () {
 
@@ -14,11 +14,11 @@ this.ckan.module('daterangepicker-module', function ($) {
 
             // Populate the datepicker and hidden fields
             if (param_start) {
-                $('#start').val(moment.utc(param_start).year());
+                $('#ds_start').val(moment.utc(param_start).year());
                 $('#ext_start').val(param_start);
             }
             if (param_end) {
-                $('#end').val(moment.utc(param_end).year());
+                $('#ds_end').val(moment.utc(param_end).year());
                 $('#ext_end').val(param_end);
             }
 
@@ -36,18 +36,18 @@ this.ckan.module('daterangepicker-module', function ($) {
             }
 
             // Add a date-range picker widget to the <input> with id #daterange
-            $('#start').datepicker({
-		        startDate: "1800",
+            $('#ds_start').datepicker({
+                startDate: "1800",
                 endDate: "2200",
-		        format: "yyyy",
+                format: "yyyy",
                 startView: 3,
                 minViewMode: 2,
                 keyboardNavigation: false,
                 autoclose: true
-	        }).on('changeDate', function (ev) {
+                }).on('changeDate', function (ev) {
                 var start_date = moment(ev.date);
                 var start_date_str = start_date.format('YYYY')
-                var end_date_str = $('#end').val();
+                var end_date_str = $('#ds_end').val();
                 var end_date = moment(end_date_str, 'YYYY');
 
                 // Flip the dates if end date is before start date, this ensures correct order in search view for results.
@@ -61,19 +61,19 @@ this.ckan.module('daterangepicker-module', function ($) {
                 form.submit();
             });
 
-            // Add a year picker widget to the <input> with id #end
-            $('#end').datepicker({
-		        startDate: "1800",
+            // Add a year picker widget to the <input> with id #ds_end
+            $('#ds_end').datepicker({
+                startDate: "1800",
                 endDate: "2200",
-		        format: "yyyy",
+                format: "yyyy",
                 startView: 3,
                 minViewMode: 2,
                 keyboardNavigation: false,
                 autoclose: true
-	        }).on('changeDate', function (ev) {
+                }).on('changeDate', function (ev) {
                 var end_date = moment(ev.date);
                 var end_date_str = end_date.format('YYYY')
-                var start_date_str = $('#start').val();
+                var start_date_str = $('#ds_start').val();
                 var start_date = moment(start_date_str, 'YYYY');
 
                 //Flip the dates if end date is before start date, this ensures correct order in search view for results.
