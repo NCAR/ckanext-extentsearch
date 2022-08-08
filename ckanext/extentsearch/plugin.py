@@ -23,8 +23,8 @@ class ExtentSearchPlugin(plugins.SingletonPlugin):
         if not extras:
             # There are no extras in the search params, so do nothing.
             return search_params
-        start_date = extras.get('ext_start')
-        end_date = extras.get('ext_end')
+        start_date = extras.get('ext_ds_start')
+        end_date = extras.get('ext_ds_end')
         if not start_date and not end_date:
             # The user didn't select either a start and/or end date, so do nothing.
             return search_params

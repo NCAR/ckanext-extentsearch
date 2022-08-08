@@ -9,30 +9,30 @@ this.ckan.module('ds-daterangepicker-module', function ($) {
             };
 
             // Pick out relevant parameters
-            var param_start = $.urlParam('ext_start');
-            var param_end = $.urlParam('ext_end');
+            var param_start = $.urlParam('ext_ds_start');
+            var param_end = $.urlParam('ext_ds_end');
 
             // Populate the datepicker and hidden fields
             if (param_start) {
                 $('#ds_start').val(moment.utc(param_start).year());
-                $('#ext_start').val(param_start);
+                $('#ext_ds_start').val(param_start);
             }
             if (param_end) {
                 $('#ds_end').val(moment.utc(param_end).year());
-                $('#ext_end').val(param_end);
+                $('#ext_ds_end').val(param_end);
             }
 
-            // Add hidden <input> tags #ext_start and #ext_end, if they don't already exist.
+            // Add hidden <input> tags #ext_ds_start and #ext_ds_end, if they don't already exist.
             var form = $("#dataset-search");
             // CKAN 2.1
             if (!form.length) {
                 form = $(".search-form");
             }
-            if ($("#ext_start").length === 0) {
-                $('<input type="hidden" id="ext_start" name="ext_start" />').appendTo(form);
+            if ($("#ext_ds_start").length === 0) {
+                $('<input type="hidden" id="ext_ds_start" name="ext_ds_start" />').appendTo(form);
             }
-            if ($("#ext_end").length === 0) {
-                $('<input type="hidden" id="ext_end" name="ext_end" />').appendTo(form);
+            if ($("#ext_ds_end").length === 0) {
+                $('<input type="hidden" id="ext_ds_end" name="ext_ds_end" />').appendTo(form);
             }
 
             // Add a date-range picker widget to the <input> with id #daterange
@@ -52,11 +52,11 @@ this.ckan.module('ds-daterangepicker-module', function ($) {
 
                 // Flip the dates if end date is before start date, this ensures correct order in search view for results.
                 if(end_date_str && start_date.isAfter(end_date, 'year')) {
-                    $('#ext_start').val(end_date_str);
-                    $('#ext_end').val(start_date_str);
+                    $('#ext_ds_start').val(end_date_str);
+                    $('#ext_ds_end').val(start_date_str);
                 }
                 else {
-                    $('#ext_start').val(start_date_str);
+                    $('#ext_ds_start').val(start_date_str);
                 }
                 form.submit();
             });
@@ -78,11 +78,11 @@ this.ckan.module('ds-daterangepicker-module', function ($) {
 
                 //Flip the dates if end date is before start date, this ensures correct order in search view for results.
                 if(start_date_str && start_date.isAfter(end_date, 'year')) {
-                    $('#ext_start').val(end_date_str);
-                    $('#ext_end').val(start_date_str);
+                    $('#ext_ds_start').val(end_date_str);
+                    $('#ext_ds_end').val(start_date_str);
                 }
                 else {
-                    $('#ext_end').val(end_date_str);
+                    $('#ext_ds_end').val(end_date_str);
                 }
                 form.submit();
             });
