@@ -23,8 +23,8 @@ class ExtentSearchPlugin(plugins.SingletonPlugin):
         if not extras:
             # There are no extras in the search params, so do nothing.
             return search_params
-        start_date = extras.get('ext_startdate')
-        end_date = extras.get('ext_enddate')
+        start_date = extras.get('ext_ds_start')
+        end_date = extras.get('ext_ds_end')
         if not start_date and not end_date:
             # The user didn't select either a start and/or end date, so do nothing.
             return search_params
@@ -34,7 +34,7 @@ class ExtentSearchPlugin(plugins.SingletonPlugin):
             end_date = '*'
         # Add a date-range query with the selected start and/or end dates into the Solr facet queries.
         fq = search_params.get('fq', '')
-        fq = '{fq} +extras_publication_date:[{sd} TO {ed}]'.format(fq=fq, sd=start_date, ed=end_date)
+        fq = '{fq} +extent_range:[{sd} TO {ed}]'.format(fq=fq, sd=start_date, ed=end_date)
         search_params['fq'] = fq
         return search_params
 

@@ -1,11 +1,11 @@
 
 extentsearch-js:
   contents:
-    - moment.js
-    - bootstrap-datepicker.js
-    - daterangepicker-module.js
+    - ds-moment.js
+    - ds-bootstrap-datepicker.js
+    - ds-daterangepicker-module.js
 
 extentsearch-css:
   contents:
-    - datepicker.css
+    - ds-datepicker.css
 
